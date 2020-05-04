@@ -62,6 +62,13 @@ export function createResource<Params = void, Done = void, Fail = void>(
   const failBody = failData.map(({ body }) => body);
   const failInvalid = mappedFail.__; // eslint-disable-line no-underscore-dangle
 
+  doneInvalid.watch(({ result }) => {
+    console.warn(`Failed to parse answer for "${options.name}.done"`, result);
+  });
+  failInvalid.watch(({ error }) => {
+    console.warn(`Failed to parse answer for "${options.name}.fail"`, error);
+  });
+
   const properties = { ...original };
   const callee = original.map((argument) => argument);
   Object.assign(callee, properties, {
